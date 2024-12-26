@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Tabu.DTOs.Languages;
+using Tabu.Exceptions;
 using Tabu.Services.Abstracts;
 
 namespace Tabu.Controllers
 {
     [ApiController]
     [Route("/api/ [controller]")]
-    public class LanguagesController(ILanguageService _service) : ControllerBase
+    public class LanguagesController(ILanguageService _service , IMapper _mapper) : ControllerBase
     {
         [HttpGet]
         public async Task <IActionResult> Get()
@@ -18,8 +20,27 @@ namespace Tabu.Controllers
         [HttpPost]
         public async  Task<IActionResult> Create(LanguageCreateDto dto)
         {
-            await _service.CreateAsync( dto);
-            return Ok( );
+            try
+            {
+                await _service.CreateAsync(dto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex is IBaseException bEx)
+                {
+                    return StatusCode(bEx.StatusCode, new
+                    {
+                        Message = bEx.ErrorMessage
+                    });
+                    
+                }
+                else
+                {
+                    return BadRequest(ex.Message);
+                }
+            }            
+             
         }
 
         [HttpPut("{code}")]
