@@ -8,8 +8,7 @@ namespace Tabu.Profiles
     {
         public LanguageProfile()
         {
-            CreateMap<LanguageCreateDto, Language>()
-                .ForMember(l=>l.IconUrl, lcd=>lcd.MapFrom(x=>x.IconUrl));
+            CreateMap<LanguageCreateDto, Language>();
             CreateMap< Language , LanguageGeetDto>();
         }
     }

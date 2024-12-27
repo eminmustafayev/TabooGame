@@ -18,7 +18,7 @@ namespace Tabu.Validation.Languages
                 .MaximumLength(32)
                 .MinimumLength(3);
 
-            RuleFor(x => x.IconUrl)
+            RuleFor(x => x.Icon)
                 .MaximumLength (128)
                 .Matches("^http(s) ?://([\\w-]+.)+[\\w-]+(/[\\w- ./?%&=])?$")
                     .WithMessage("link daxil edin z.o");
